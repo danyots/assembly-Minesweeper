@@ -1,0 +1,521 @@
+;--------------------------------------------------------------------------------------
+; GVAHIM 
+; 
+; Template program for .COM files 
+;--------------------------------------------------------------------------------------
+
+
+ideal
+model tiny
+include "C:\gvahim.mac"
+dataseg
+
+;--------------------------------------------------------------------------------------
+; Begin Data definitions
+;--------------------------------------------------------------------------------------
+array db 400 dup(?)
+pix db 219, 0
+mone dw 0
+puni db ?
+tsirkin db ?
+uriel db 2h
+shura db ?
+amuda db ? 
+schum_colel db 0
+value db ?
+value1 db ?
+value2 db ?
+digon db 6, 0
+cocav db 15, 0
+aba db 20
+ppp db 16
+lll db 8
+y db 89, 0
+o db 79, 0
+u db 86, 0
+e db 10, 0
+l db 76, 0
+s db 83, 0
+t db 84, 0
+q db 33, 0
+w db 87, 0
+n db 78, 0
+esr db 20d
+
+;--------------------------------------------------------------------------------------
+; End   Data definitions 
+;--------------------------------------------------------------------------------------
+
+
+
+
+
+;--------------------------------------------------------------------------------------
+; Begin Instructions 
+;--------------------------------------------------------------------------------------
+codeseg
+
+org 100h
+ENTRY: 
+push ax
+xor ax, ax
+push dx
+push bx 
+push cx
+
+mov ax, 13h 
+int 10h
+mov dh, 0
+mov dl, 0
+mov bh, 0
+io:
+mov cx, 10d
+loopl:
+	mov ah, 2
+	int 10h
+	lea si, [byte pix]
+	call PRINT_STR
+	add dh, 2
+loop loopl
+
+yp:
+	mov dh, 0
+	add dl, 2
+	cmp dl, 19
+	jbe io
+mov bx, 0
+ys:
+mov dl, 1
+mov dh, 1
+mov bh, 0
+po:
+mov cx, 10d
+looplp:
+	mov ah, 2
+	int 10h
+	lea si, [byte pix]
+	call PRINT_STR
+	add dh, 2
+loop looplp
+
+yk:
+	mov dh, 1
+	add dl, 2
+	cmp dl, 19
+	jbe po
+mov bx, 0
+nitai:
+	mov ax, 40h
+	mov es, ax
+	mov ax, es:6Ch
+	and al, 11111111b
+	inc [word  mone]
+	cmp [word mone], 51
+	je ttt
+	mov ah, 0
+mov cl, 8
+loopl2:
+	div [byte uriel]
+	mov [byte array+bx], ah
+	inc bx
+loop loopl2
+jmp nitai
+ttt:
+	
+	mov ax, 0
+	int 33h
+	mov ah, 0
+	mov al, 0
+
+	
+hazara:
+
+	mov ax,1h
+	int 33h
+	mov bx, 0
+	mov ax,3h
+	int 33h
+
+	mov ax, cx 
+	div [byte ppp]
+
+	mov ah, 0
+	mov cx, ax
+	mov ax, dx
+	div [byte lll]
+
+
+
+	mov ah, 0
+	mov dx, ax
+	mov ax, bx
+	div [byte uriel]
+	cmp ah, 0
+	jne yemani
+	mov ah, 0
+	div [byte uriel]
+	cmp ah, 0
+	je hazara
+
+
+smally:
+	mov [byte amuda], cl
+	mov [byte shura], dl
+	cmp [byte amuda], 19
+	ja hazara
+	cmp [byte shura], 19
+	ja hazara
+	call degel
+	jmp hazara
+yemani:
+	mov [byte amuda], cl
+	mov [byte shura], dl
+	cmp [byte amuda], 19
+	ja yo
+	cmp [byte shura], 19
+	ja yo
+
+	call ptiha
+	cmp [array+bx], 0
+	jne nimtsa
+	cmp [byte amuda], 0
+	je tsad_smol
+	cmp [byte amuda], 19
+	je tsad_yamin
+	cmp [byte shura],0
+	je lemala
+	cmp [byte shura], 19
+	je lemata
+	call ragil
+yofi:
+	jmp hazara
+	
+	
+yo:
+	mov ax, 4C00h
+	int 21h
+nimtsa:
+	call ptsatsa
+	jmp hazara
+tsad_smol:
+	cmp [byte shura], 0
+	je pina_smalit_lemala
+	cmp [byte shura], 19
+	je pina_smalit_lemata
+	call tsad_smol1
+	jmp yofi
+tsad_yamin:
+	cmp [shura], 0
+	je pina_yemanit_lemala
+	cmp [byte shura],19
+	je pina_yemanit_lemata
+	call tsad_yamin1
+	jmp yofi
+lemala:
+	cmp [byte amuda], 0
+	je pina_smalit_lemala
+	cmp [byte amuda], 19
+	je pina_yemanit_lemala
+	call lemala1
+	jmp yofi
+lemata:
+	cmp [byte amuda], 0
+	je pina_smalit_lemata
+	cmp [byte amuda], 19
+	je pina_yemanit_lemata
+	call lemata1
+	jmp yofi
+pina_smalit_lemala:
+	call pina_smalit_lemala1
+	jmp yofi
+pina_smalit_lemata:
+	call pina_smalit_lemata1
+	jmp yofi
+pina_yemanit_lemala:
+	call pina_yemanit_lemala1
+	jmp yofi
+pina_yemanit_lemata:
+	call pina_yemanit_lemata1
+	jmp yofi
+
+
+
+
+	
+	
+
+
+exit:
+	mov ax, 4c00h
+	int 21h
+
+
+
+proc degel
+	mov ax,2h
+	int 33h
+	mov dh, [byte shura]
+	mov dl, [byte amuda]
+	mov bh, 0
+	mov ah, 2
+	int 10h
+	lea si, [byte digon]
+	
+	call PRINT_STR
+	ret
+endp degel
+proc pe
+	mov al, [byte schum_colel]
+	add al, [byte array+bx]
+	mov [byte schum_colel], al
+	ret
+endp pe
+proc print
+
+	mov ax,2h
+	int 33h
+	xor dx, dx
+	mov dh, [byte shura]
+	mov dl, [byte amuda]
+	mov bh, 0
+	mov ah, 2
+	int 10h
+	mov al, [byte schum_colel]
+	mov ah, 0
+	call PRINT_NUM_DEC
+	ret
+endp print
+proc ptsatsa
+	mov ax,2h
+	int 33h
+	mov dh, [byte shura]
+	mov dl, [byte amuda]
+	mov bh, 0
+	mov ah, 2
+	int 10h
+	lea si, [byte cocav]
+	call PRINT_STR
+	call print_lost
+
+	
+	call exit1
+	ret
+endp ptsatsa
+
+
+
+proc print_lost
+	mov dh, 1
+	mov dl, 21
+	mov ah, 2
+	int 10h
+	lea si, [byte y]
+	call PRINT_STR
+	add dh, 2
+	mov ah, 2
+	int 10h
+	lea si, [byte o]
+	call PRINT_STR
+	add dh, 2
+	mov ah, 2
+	int 10h
+	lea si, [byte u]
+	call PRINT_STR
+	add dh, 2
+	mov ah, 2
+	int 10h
+	lea si, [byte e]
+	call PRINT_STR
+	add dh, 2
+	mov ah, 2
+	int 10h
+	lea si, [byte l]
+	call PRINT_STR
+	add dh, 2
+	mov ah, 2
+	int 10h
+	lea si, [byte o]
+	call PRINT_STR
+	add dh, 2
+	mov ah, 2
+	int 10h
+	lea si, [byte s]
+	call PRINT_STR
+	add dh, 2
+	mov ah, 2
+	int 10h
+	lea si, [byte t]
+	call PRINT_STR
+	add dh, 2
+	mov ah, 2
+	int 10h
+	lea si, [byte e]
+	call PRINT_STR
+	add dh, 2
+	mov ah, 2
+	int 10h
+	lea si, [byte q]
+	call PRINT_STR
+	ret
+endp print_lost
+proc exit1
+	mov ax, 4c00h
+	int 21h
+	ret
+	endp exit1
+proc pixel
+
+	mov dh, [byte puni]
+	mov dl, [byte tsirkin]
+	mov bh, 0
+	mov ah, 2
+	int 10h
+	lea si, [byte pix]
+
+	call PRINT_STR
+	ret
+endp pixel
+proc ptiha
+
+	mov al, [byte shura]
+	mov ah, 0
+	mul [byte aba]
+	push cx
+	mov cl, [byte amuda]
+	mov ch, 0
+	add ax, cx
+	mov bx, ax
+	pop cx
+	ret
+endp ptiha
+proc ragil
+	inc bx
+	call pe
+	sub bx, 2
+	call pe
+	add bx, 20
+	call pe
+	inc bx
+	call pe
+	inc bx
+	call pe
+	sub bx, 40
+	call pe
+	dec bx
+	call pe
+	dec bx
+	call pe
+	call print
+	mov [schum_colel], 0
+	ret 
+endp ragil
+proc tsad_smol1
+	inc bx
+	call pe
+	add bx, 20
+	call pe
+	dec bx
+	call pe
+	sub bx, 40
+	call pe
+	inc bx
+	call pe
+	call print
+	mov [schum_colel], 0
+	ret 
+endp tsad_smol1
+proc pina_smalit_lemala1
+	inc bx
+	call pe
+	add bx, 20
+	call pe
+	dec bx
+	call pe
+	call print
+	mov [schum_colel], 0
+	ret
+endp pina_smalit_lemala1
+proc pina_smalit_lemata1
+	inc bx
+	call pe
+	sub bx, 20
+	call pe
+	dec bx
+	call print
+	mov [schum_colel], 0
+	ret
+endp pina_smalit_lemata1
+proc tsad_yamin1
+	dec bx
+	call pe
+	add bx, 20
+	call pe
+	inc bx
+	call pe
+	sub bx, 40
+	call pe
+	dec bx
+	call pe
+	call print
+	mov [schum_colel], 0
+	ret
+endp tsad_yamin1
+proc pina_yemanit_lemala1
+	dec bx
+	call pe
+	add bx, 20
+	call pe
+	inc bx
+	call pe
+	call print
+	mov [schum_colel], 0
+	ret
+endp pina_yemanit_lemala1
+proc pina_yemanit_lemata1
+	dec bx
+	call pe
+	sub bx, 20
+	call pe
+	inc bx
+	call pe
+	call print
+	mov [schum_colel], 0
+	ret
+endp pina_yemanit_lemata1
+proc lemala1
+	inc bx 
+	call pe
+	sub bx, 2
+	call pe
+	add bx, 20
+	call pe
+	inc bx
+	call pe 
+	inc bx
+	call pe
+	call print 
+	mov [schum_colel], 0
+	ret
+endp lemala1
+proc lemata1
+	inc bx
+	call pe
+	sub bx, 2
+	call pe
+	sub bx, 20
+	call pe
+	inc bx 
+	call pe
+	inc bx 
+	call pe
+	call print
+	mov [schum_colel], 0
+	ret
+endp lemata1
+    ret     ; Return to O/S - Last instruction
+;--------------------------------------------------------------------------------------
+; End   Instructions 
+;--------------------------------------------------------------------------------------
+
+include "c:\gvahim\gvahim.asm"
+end ENTRY
